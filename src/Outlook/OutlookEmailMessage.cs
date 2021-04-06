@@ -83,7 +83,7 @@ namespace TimHanewich.MicrosoftGraphHelper.Outlook
                 ToRecipientsObjects.Add(thisToRecip);
             }
             JArray arrayOfToRecips = JArray.Parse(JsonConvert.SerializeObject(ToRecipientsObjects.ToArray()));
-            jo_body.Add("toRecipients", arrayOfToRecips);
+            ToReturn.Add("toRecipients", arrayOfToRecips);
 
             return ToReturn.ToString();
         }
