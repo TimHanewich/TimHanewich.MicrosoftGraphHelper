@@ -171,6 +171,31 @@ namespace TimHanewich.MicrosoftGraphHelper
             return tokenpayload;
         }
 
+        public async Task RefreshAccessTokenIfExpiredAsync()
+        {
+            if (AccessTokenHasExpired())
+            {
+                await RefreshAccessTokenAsync();
+            }
+        }
+
+        public bool AccessTokenHasExpired()
+        {
+            if (LastReceivedTokenPayload == null)
+            {
+                throw new Exception("An access token has not been received yet.");
+            }
+
+            if (DateTime.UtcNow > LastReceivedTokenPayload.ExpiresAtUtc)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private string UrlEncodeScopes(string[] ToEncode)
         {
             string ToReturn = "";
