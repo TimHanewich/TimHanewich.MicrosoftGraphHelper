@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace TestingExchangeApi
+namespace TimHanewich.MicrosoftGraphHelper
 {
     public class MicrosoftGraphTokenPayload
     {
