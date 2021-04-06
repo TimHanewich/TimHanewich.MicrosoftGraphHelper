@@ -18,7 +18,7 @@ namespace TimHanewich.MicrosoftGraphHelper.Outlook
             reqmsg.RequestUri = new Uri("https://graph.microsoft.com/v1.0/me/sendMail");
             reqmsg.Headers.Add("Authorization", "Bearer " + mgh.LastReceivedTokenPayload.AccessToken);
             reqmsg.Content = new StringContent(msg.ToPayload(), Encoding.UTF8, "application/json");
-
+            
             //Make the call
             HttpClient hc = new HttpClient();
             HttpResponseMessage hrm = await hc.SendAsync(reqmsg);
