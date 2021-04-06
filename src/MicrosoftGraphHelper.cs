@@ -29,7 +29,7 @@ namespace TimHanewich.MicrosoftGraphHelper
         public string RedirectUrl {get; set;}
 
         //Last received payload
-        private MicrosoftGraphTokenPayload LastReceivedTokenPayload {get; set;}
+        public MicrosoftGraphTokenPayload LastReceivedTokenPayload {get; set;}
 
         public MicrosoftGraphHelper()
         {
@@ -170,7 +170,6 @@ namespace TimHanewich.MicrosoftGraphHelper
 
             return tokenpayload;
         }
-
 
         private string UrlEncodeScopes(string[] ToEncode)
         {
