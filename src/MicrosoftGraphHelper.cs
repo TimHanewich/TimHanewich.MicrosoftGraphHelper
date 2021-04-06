@@ -18,9 +18,7 @@ namespace TimHanewich.MicrosoftGraphHelper
         private string authorize_endpoint;
         
         //Standard inputs - Token Request Specific
-        private string graph_base_url; //Used for token request and other graph requests
         private string token_endpoint;
-        private string grant_type; 
 
         //Custom inputs
         public Guid TenantId {get; set;}
@@ -39,8 +37,6 @@ namespace TimHanewich.MicrosoftGraphHelper
             login_base_url = "https://login.microsoftonline.com";
             authorize_endpoint = "oauth2/v2.0/authorize";
             token_endpoint = "oauth2/v2.0/token";
-            grant_type = "authorization_code"; //Required for token authentication
-            graph_base_url = "https://graph.microsoft.com";
         }
 
         public string AssembleAuthorizationUrl(bool include_offline_access = true, bool always_show_consent = true)
