@@ -71,7 +71,7 @@ namespace TimHanewich.MicrosoftGraphHelper
             return ToReturn;
         }
 
-        public async Task<MicrosoftGraphTokenPayload> GetAccessTokenAsync(string authorization_code)
+        public async Task GetAccessTokenAsync(string authorization_code)
         {
             //Assemble the URL to request from using the code
             string ReqUrl = login_base_url + "/" + TenantId.ToString() + "/" + token_endpoint;
@@ -117,11 +117,9 @@ namespace TimHanewich.MicrosoftGraphHelper
 
             //Store for later
             LastReceivedTokenPayload = tokenpayload;
-
-            return tokenpayload;
         }
 
-        public async Task<MicrosoftGraphTokenPayload> RefreshAccessTokenAsync()
+        public async Task RefreshAccessTokenAsync()
         {
             //Assemble the URL to request from using the code
             string ReqUrl = login_base_url + "/" + TenantId.ToString() + "/" + token_endpoint;
@@ -167,8 +165,6 @@ namespace TimHanewich.MicrosoftGraphHelper
 
             //Store for later
             LastReceivedTokenPayload = tokenpayload;
-
-            return tokenpayload;
         }
 
         public async Task RefreshAccessTokenIfExpiredAsync()
