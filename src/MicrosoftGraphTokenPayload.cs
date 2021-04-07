@@ -1,6 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace TimHanewich.MicrosoftGraphHelper
 {
@@ -24,7 +25,9 @@ namespace TimHanewich.MicrosoftGraphHelper
             //Scopes
             JProperty prop_scope = jo.Property("scope");
             string prop_scope_str = prop_scope.Value.ToString();
-            Scope = prop_scope_str.Split(" ");
+            List<string> Splitter = new List<string>();
+            Splitter.Add(" ");
+            Scope = prop_scope_str.Split(Splitter.ToArray(), StringSplitOptions.None);
 
             //Received at and expires at
             ReceivedAtUtc = DateTime.UtcNow;
