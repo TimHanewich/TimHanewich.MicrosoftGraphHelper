@@ -2,10 +2,35 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Version>0.1.0</Version>
+    <PackageId>TimHanewich.MicrosoftGraphHelper</PackageId>
+    <Authors>Tim Hanewich</Authors>
+    <Company>Tim Hanewich</Company>
+    <Product>Microsoft Graph Helper</Product>
+    <Description>Library designed to assist with the Microsoft Graph authentication and token refresh process and help with transacting with several graph services.</Description>
+    <Copyright>Tim Hanewich</Copyright>
+    <PackageLicenseFile>license.md</PackageLicenseFile>
+    <PackageIcon>graphicon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/TimHanewich/MicrosoftGraphHelper</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <PackageTags>microsoft graph,graph api,graph helper,microsoft graph helper,hanewich</PackageTags>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>0.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\license.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="graphicon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
