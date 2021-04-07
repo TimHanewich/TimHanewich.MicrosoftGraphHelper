@@ -1,6 +1,11 @@
 # Microsoft Graph Helper
 This is a .NET class library designed to assist with the Microsoft Graph Authentication process as well as with transacting with several graph modules. This library is available on NuGet as `TimHanewich.MicrosoftGraphHelper`.
 
+### To Install
+```
+dotnet add package TimHanewich.MicrosoftGraphHelper
+```
+
 ## Step 1: User Provides Consent
 The core class in this library is the `MicrosoftGraphHelper` class. After creating a new instance of `MicrosoftGraphHelper`, there are several inputs you make that will be used in the authentication process.
 - Tenant ID
