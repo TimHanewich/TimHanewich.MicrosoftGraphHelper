@@ -37,5 +37,30 @@ namespace TimHanewich.MicrosoftGraphHelper.Sharepoint
 
             return Sites.ToArray();
         }
+    
+        public static async Task<SharepointList[]> ListSharepointListsAsync(this MicrosoftGraphHelper mgh, Guid site_id)
+        {
+            HttpRequestMessage req = mgh.PrepareHttpRequestMessage();
+            req.Method = HttpMethod.Get;
+            req.RequestUri = new Uri("https://graph.microsoft.com/v1.0/sites/" + site_id.ToString() + "/lists");
+            HttpClient hc = new HttpClient();
+            HttpResponseMessage msg = await hc.SendAsync(req);
+            string content = await msg.Content.ReadAsStringAsync();
+            if (msg.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception("Listing lists from sharepoint site '" + site_id.ToString() + "' failed with code \"" + msg.StatusCode.ToString() + "\". Body: " + content);
+            }
+            JObject jo = JObject.Parse(content);
+
+            //Get them
+            JArray ja_value = JArray.Parse(jo.Property("value").Value.ToString());
+            List<SharepointList> Lists = new List<SharepointList>();
+            foreach (JObject jo_sl in ja_value)
+            {
+                SharepointList sl = SharepointList.ParseFromJsonPayload(jo_sl.ToString());
+                Lists.Add(sl);
+            }
+            return Lists.ToArray();
+        }
     }
 }
