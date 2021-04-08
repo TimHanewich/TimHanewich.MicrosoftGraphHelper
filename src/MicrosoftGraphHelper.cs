@@ -186,6 +186,18 @@ namespace TimHanewich.MicrosoftGraphHelper
             }
         }
 
+        public HttpRequestMessage PrepareHttpRequestMessage()
+        {
+            if (LastReceivedTokenPayload == null)
+            {
+                throw new Exception("Unable to prepare Http Client with authorization... access token has not been received!");
+            }
+
+            HttpRequestMessage req = new HttpRequestMessage();
+            req.Headers.Add("Authorization", "Bearer " + LastReceivedTokenPayload.AccessToken);
+            return req;            
+        }
+
         private string UrlEncodeScopes(string[] ToEncode)
         {
             string ToReturn = "";

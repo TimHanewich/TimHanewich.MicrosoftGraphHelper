@@ -53,7 +53,7 @@ namespace TimHanewich.MicrosoftGraphHelper.Sharepoint
                     List<string> Splitter = new List<string>();
                     Splitter.Add(",");
                     string[] parts = prop_id.Value.ToString().Split(Splitter.ToArray(), StringSplitOptions.None);
-                    Id = Guid.Parse(Splitter[1]);
+                    Id = Guid.Parse(parts[1]);
                 }
             }
 
