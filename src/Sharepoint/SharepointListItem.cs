@@ -111,5 +111,35 @@ namespace TimHanewich.MicrosoftGraphHelper.Sharepoint
 
             return ToReturn;
         }
+    
+        public SharepointListItemField GetField(string field_label, bool case_sensisive = false)
+        {
+            SharepointListItemField ToReturn = null;
+            foreach (SharepointListItemField field in Fields)
+            {
+                bool ThisIsIt = false;
+
+                if (case_sensisive)
+                {
+                    if (field.Label == field_label)
+                    {
+                        ThisIsIt = true;
+                    }
+                }
+                else
+                {
+                    if (field.Label.ToLower() == field_label.ToLower())
+                    {
+                        ThisIsIt = true;
+                    }
+                }
+
+                if (ThisIsIt && ToReturn == null)
+                {
+                    ToReturn = field;
+                }
+            }
+            return ToReturn;
+        }
     }
 }
