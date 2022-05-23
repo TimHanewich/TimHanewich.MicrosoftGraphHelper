@@ -13,7 +13,7 @@ namespace TimHanewich.MicrosoftGraphHelper.Sharepoint
         public string Url {get; set;}
         public AzureAdUser CreatedBy {get; set;}
         public AzureAdUser LastModifiedBy {get; set;}
-        public SharepointListItemField[] Fields {get; set;}
+        public JObject Fields {get; set;}
 
         public static SharepointListItem ParseFromJsonPayload(string payload)
         {
@@ -86,60 +86,18 @@ namespace TimHanewich.MicrosoftGraphHelper.Sharepoint
             }
 
             //Fields
-            List<SharepointListItemField> fields = new List<SharepointListItemField>();
             JProperty prop_fields = jo.Property("fields");
             if (prop_fields != null)
             {
-                JObject jo_fields = JObject.Parse(jo.Property("fields").Value.ToString());
-                foreach (JProperty prop in jo_fields.Properties())
+                if (prop_fields.Value.Type != JTokenType.Null)
                 {
-                    SharepointListItemField thisfield = new SharepointListItemField();
-                    thisfield.Label = prop.Name;
-                    if (prop.Value.Type != JTokenType.Null)
-                    {
-                        thisfield.Value = prop.Value.ToString();
-                    }
-                    else
-                    {
-                        thisfield.Value = null;
-                    }
-                    fields.Add(thisfield);
+                    JObject fields = JObject.Parse(prop_fields.Value.ToString());
+                    ToReturn.Fields = fields;
                 }
             }
-            ToReturn.Fields = fields.ToArray();
             
-
             return ToReturn;
         }
     
-        public SharepointListItemField GetField(string field_label, bool case_sensisive = false)
-        {
-            SharepointListItemField ToReturn = null;
-            foreach (SharepointListItemField field in Fields)
-            {
-                bool ThisIsIt = false;
-
-                if (case_sensisive)
-                {
-                    if (field.Label == field_label)
-                    {
-                        ThisIsIt = true;
-                    }
-                }
-                else
-                {
-                    if (field.Label.ToLower() == field_label.ToLower())
-                    {
-                        ThisIsIt = true;
-                    }
-                }
-
-                if (ThisIsIt && ToReturn == null)
-                {
-                    ToReturn = field;
-                }
-            }
-            return ToReturn;
-        }
     }
 }
