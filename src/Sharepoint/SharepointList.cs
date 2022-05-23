@@ -107,16 +107,21 @@ namespace TimHanewich.MicrosoftGraphHelper.Sharepoint
             }
 
             //Last modified by user
-            JObject jo_lastModifiedBy = JObject.Parse(jo.Property("lastModifiedBy").Value.ToString());
-            if (jo_createdBy != null)
+            JProperty prop_lastModifiedBy = jo.Property("lastModifiedBy");
+            if (prop_lastModifiedBy != null)
             {
-                JObject jo_user = JObject.Parse(jo_lastModifiedBy.Property("user").Value.ToString());
-                if (jo_user != null)
+                JObject jo_lastModifiedBy = JObject.Parse(jo.Property("lastModifiedBy").Value.ToString());
+                if (jo_createdBy != null)
                 {
-                    AzureAdUser user = AzureAdUser.ParseFromJsonPayload(jo_user.ToString());
-                    ToReturn.LastModifiedBy = user;
-                }   
+                    JObject jo_user = JObject.Parse(jo_lastModifiedBy.Property("user").Value.ToString());
+                    if (jo_user != null)
+                    {
+                        AzureAdUser user = AzureAdUser.ParseFromJsonPayload(jo_user.ToString());
+                        ToReturn.LastModifiedBy = user;
+                    }   
+                }
             }
+            
 
             //List type
             JObject jo_list = JObject.Parse(jo.Property("list").Value.ToString());
