@@ -87,5 +87,26 @@ namespace TimHanewich.MicrosoftGraphHelper.Sharepoint
             }
             return SPitems.ToArray();
         }
+    
+        public static async Task CreateItemAsync(this MicrosoftGraphHelper mgh, Guid site_id, Guid list_id, JObject fields)
+        {
+            HttpRequestMessage req = mgh.PrepareHttpRequestMessage();
+            req.Method = HttpMethod.Post;
+            req.RequestUri = new Uri("https://graph.microsoft.com/v1.0/sites/" + site_id.ToString() + "/lists/" + list_id.ToString() + "/items");
+            
+            //Create the body
+            JObject jo = new JObject();
+            jo.Add("fields", fields);
+            req.Content = new StringContent(jo.ToString(), System.Text.Encoding.UTF8, "application/json");
+            
+            //Send!
+            HttpClient hc = new HttpClient();
+            HttpResponseMessage resp = await hc.SendAsync(req);
+            if (resp.StatusCode != HttpStatusCode.Created)
+            {
+                string msg = await resp.Content.ReadAsStringAsync();
+                throw new Exception("Creation of new record failed. Msg: " + msg);
+            }
+        }
     }
 }
