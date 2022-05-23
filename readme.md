@@ -45,4 +45,10 @@ Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(lists)).ToString());
 //Get the content of a list
 SharepointListItem[] items = mgh.GetAllItemsFromSharepointListAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Parse("771b32f1-859c-4570-8bf2-7c86d140dc5c")).Result;
 Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(items)).ToString());
+
+//Creating a new item (record) in a list
+JObject jo = new JObject();
+jo.Add("Title", "Harry the Hippo");
+mgh.CreateItemAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Parse("771b32f1-859c-4570-8bf2-7c86d140dc5c"), jo).Wait();
+
 ```
