@@ -56,17 +56,17 @@ namespace testing
                 Console.WriteLine("Tokens are still active! No need to refresh.");
             }
 
-            //Schedule outlook event
-            OutlookEvent ev = new OutlookEvent();
-            ev.Subject = "Let's do something";
-            ev.Body = "Go shopping maybe?";
-            ev.StartUTC = new DateTime(2025, 03, 02, 12, 0, 0);
-            ev.EndUTC = ev.StartUTC.AddMinutes(15);
-
-            //Schedule
-            Console.Write("Scheduling... ");
-            await mgh.CreateOutlookEventAsync(ev);
-            Console.WriteLine("done!");
+            //Construct email
+            OutlookEmailMessage email = new OutlookEmailMessage();
+            email.ToRecipients.Add("timhanewich@gmail.com");
+            email.Subject = "My favorite songs";
+            email.Content = "1. Chris Brown - Yeah 3X\n2. Chris Brown - Forever\n3. Chris Brown - Turn Up the Music";
+            email.ContentType = OutlookEmailMessageContentType.Text;
+            
+            //Send email
+            Console.Write("Sending email... ");
+            await mgh.SendOutlookEmailMessageAsync(email);
+            Console.WriteLine("Sent!");
 
         }
 
