@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TimHanewich.MicrosoftGraphHelper;
+using TimHanewich.MicrosoftGraphHelper.Outlook;
 
 namespace testing
 {
@@ -9,7 +10,8 @@ namespace testing
     {
         static void Main(string[] args)
         {
-            Authenticate().Wait();
+            //Authenticate().Wait();
+            DoSomething().Wait();
         }
 
         public static async Task Authenticate()
@@ -39,7 +41,33 @@ namespace testing
 
         public static async Task DoSomething()
         {
+            MicrosoftGraphTokenPayload tokens = JsonConvert.DeserializeObject<MicrosoftGraphTokenPayload>(System.IO.File.ReadAllText(@"C:\Users\timh\Downloads\tah\TimHanewich.MicrosoftGraphHelper\payload.json"));
+            MicrosoftGraphHelper mgh = new MicrosoftGraphHelper();
+            mgh.LastReceivedTokenPayload = tokens;
             
+            if (mgh.AccessTokenHasExpired())
+            {
+                Console.Write("Tokens are expired! Refreshing... ");
+                await mgh.RefreshAccessTokenAsync(); 
+                Console.WriteLine("Refreshed!");  
+            }
+            else
+            {
+                Console.WriteLine("Tokens are still active! No need to refresh.");
+            }
+
+            //Schedule outlook event
+            OutlookEvent ev = new OutlookEvent();
+            ev.Subject = "Let's do something";
+            ev.Body = "Go shopping maybe?";
+            ev.StartUTC = new DateTime(2025, 03, 02, 12, 0, 0);
+            ev.EndUTC = ev.StartUTC.AddMinutes(15);
+
+            //Schedule
+            Console.Write("Scheduling... ");
+            await mgh.CreateOutlookEventAsync(ev);
+            Console.WriteLine("done!");
+
         }
 
     }
