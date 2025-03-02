@@ -23,7 +23,7 @@ mgh.Scope.Add("Calendars.ReadWrite");
 mgh.Scope.Add("Mail.Read");
 
 
-//authorization via the web browser. Redirect the user to visit the url and provide consent.
+//authorization happens via the web browser. Redirect the user to visit the url and provide consent.
 //they will redirected to the redirect URL (must be a registered redirect URL in the application in Azure AD) with a "code" parameter.
 string url = mgh.AssembleAuthorizationUrl();
 Console.WriteLine("Please go to the following URL and sign in. After you sign in, give me the "code" parameter out of the URL it redirects you to");
