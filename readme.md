@@ -3,21 +3,10 @@ This is a .NET class library designed to assist with the Microsoft Graph Authent
 
 This library was built around the Microsoft documentation specified [here](https://learn.microsoft.com/en-us/graph/auth-v2-user).
 
-### To Install
+To install the package from NuGet in your .NET project, run the following:
 ```
 dotnet add package TimHanewich.MicrosoftGraphHelper
 ```
-
-## Step 1: User Provides Consent
-The core class in this library is the `MicrosoftGraphHelper` class. After creating a new instance of `MicrosoftGraphHelper`, there are several inputs you make that will be used in the authentication process.
-- Client ID
-- Scope
-- Redirect URL
-After inputting these you can then assemble the URL that users will need to navigate to in order to provide consent. Use the `AssembleAuthorizationUrl` method to assemble this consent URL.
-
-## Step 2: Use Authorization code to gain Access
-After the user provides consent, they will be redirected to the redirect URL you specified in the request (and registered app in Azure). You will find the `code` parameter attached the URL. This `code` parameter is what is used to gain an access token. And the access token is what you use to transact with the graph API service. 
-To convert this `code` variable to an access token, provide this to the `GetAccessTokenAsync` method. Your access token will be stored in the `MicrosoftGraphTokenPayload` class as the `LastReceivedTokenPayload` property.
 
 ## Example: Authenticating with Microsoft Graph
 The following example demonstrates using this library to authenticate with the Microsoft Graph API. 
@@ -27,9 +16,9 @@ The following example demonstrates using this library to authenticate with the M
 ```
 MicrosoftGraphHelper mgh = new MicrosoftGraphHelper();
 mgh.Tenant = "consumers";
-mgh.ClientId = Guid.Parse("d9571adf-0c99-4285-bd6c-85d1ad9df015");
-mgh.RedirectUrl = "https://www.google.com/";
-mgh.Scope.Add("User.Read");
+mgh.ClientId = Guid.Parse("d9571adf-0c99-4285-bd6c-85d1ad9df015"); //ID of the app registration in Azure Entra ID
+mgh.RedirectUrl = "https://www.google.com/"; //registered redirect URL of the app registration in Azure Entra ID
+mgh.Scope.Add("User.Read"); //add any scopes you want
 mgh.Scope.Add("Calendars.ReadWrite");
 mgh.Scope.Add("Mail.Read");
 
