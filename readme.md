@@ -1,5 +1,7 @@
 # Microsoft Graph Helper
-This is a .NET class library designed to assist with the Microsoft Graph Authentication process as well as with transacting with several graph modules. This library is available on NuGet as `TimHanewich.MicrosoftGraphHelper`.
+This is a .NET class library designed to assist with the Microsoft Graph Authentication process as well as with transacting with several graph modules. This library is available on NuGet as `TimHanewich.MicrosoftGraphHelper`. 
+
+This library was built around the Microsoft documentation specified [here](https://learn.microsoft.com/en-us/graph/auth-v2-user).
 
 ### To Install
 ```
@@ -8,7 +10,6 @@ dotnet add package TimHanewich.MicrosoftGraphHelper
 
 ## Step 1: User Provides Consent
 The core class in this library is the `MicrosoftGraphHelper` class. After creating a new instance of `MicrosoftGraphHelper`, there are several inputs you make that will be used in the authentication process.
-- Tenant ID
 - Client ID
 - Scope
 - Redirect URL
@@ -19,16 +20,24 @@ After the user provides consent, they will be redirected to the redirect URL you
 To convert this `code` variable to an access token, provide this to the `GetAccessTokenAsync` method. Your access token will be stored in the `MicrosoftGraphTokenPayload` class as the `LastReceivedTokenPayload` property.
 
 ## Example: Authenticating with Microsoft Graph
+The following example demonstrates using this library to authenticate with the Microsoft Graph API. 
+
+*Note: The `Tenant` property, per [Microsoft documentation](https://learn.microsoft.com/en-us/graph/auth-v2-user), can be "common" for both Microsoft accounts and work/school accounts, "organizations" for work/school accounts only, "consumers" for Microsoft accounts only, of a tenant identifier (GUID).*
+
 ```
 MicrosoftGraphHelper mgh = new MicrosoftGraphHelper();
-mgh.TenantId = Guid.Parse("1e85f23f-c0af-4bce-bb96-92014d3c1359");
+mgh.Tenant = "consumers";
 mgh.ClientId = Guid.Parse("d9571adf-0c99-4285-bd6c-85d1ad9df015");
 mgh.RedirectUrl = "https://www.google.com/";
-mgh.Scope.Add("Sites.ReadWrite.All");
+mgh.Scope.Add("User.Read");
+mgh.Scope.Add("Calendars.ReadWrite");
+mgh.Scope.Add("Mail.Read");
+
 
 //authorization via the web browser. Redirect the user to visit the url and provide consent.
 //they will redirected to the redirect URL (must be a registered redirect URL in the application in Azure AD) with a "code" parameter.
 string url = mgh.AssembleAuthorizationUrl();
+Console.WriteLine("Please go to the following URL and sign in. After you sign in, give me the "code" parameter out of the URL it redirects you to");
 Console.WriteLine(url);
 Console.Write("Give me the code: ");
 string code = Console.ReadLine();
