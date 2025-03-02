@@ -19,7 +19,7 @@ namespace TimHanewich.MicrosoftGraphHelper
         private string token_endpoint;
 
         //Custom inputs
-        public Guid TenantId {get; set;}
+        public string Tenant {get; set;} //Can be "common" for both Microsoft accounts and work/school accounts, "organizations" for work/school accounts only, "consumers" for Microsoft accounts only, of a tenant identifier (GUID). According to this documentation: https://learn.microsoft.com/en-us/graph/auth-v2-user
         public Guid ClientId {get; set;}
         public List<string> Scope {get; set;}
         public string RedirectUrl {get; set;}
@@ -39,7 +39,7 @@ namespace TimHanewich.MicrosoftGraphHelper
 
         public string AssembleAuthorizationUrl(bool include_offline_access = true, bool always_show_consent = true)
         {
-            string ToReturn = login_base_url + "/" + TenantId.ToString() + "/" + authorize_endpoint;
+            string ToReturn = login_base_url + "/" + Tenant + "/" + authorize_endpoint;
             ToReturn = ToReturn + "?client_id=" + ClientId.ToString();
             ToReturn = ToReturn + "&response_type=code"; //Standard
             ToReturn = ToReturn + "&redirect_uri=" + RedirectUrl;
@@ -68,7 +68,7 @@ namespace TimHanewich.MicrosoftGraphHelper
         public async Task GetAccessTokenAsync(string authorization_code)
         {
             //Assemble the URL to request from using the code
-            string ReqUrl = login_base_url + "/" + TenantId.ToString() + "/" + token_endpoint;
+            string ReqUrl = login_base_url + "/" + Tenant + "/" + token_endpoint;
             
             List<KeyValuePair<string, string>> KVPs = new List<KeyValuePair<string, string>>();
             KVPs.Add(new KeyValuePair<string, string>("client_id",ClientId.ToString()));
@@ -116,7 +116,7 @@ namespace TimHanewich.MicrosoftGraphHelper
         public async Task RefreshAccessTokenAsync()
         {
             //Assemble the URL to request from using the code
-            string ReqUrl = login_base_url + "/" + TenantId.ToString() + "/" + token_endpoint;
+            string ReqUrl = login_base_url + "/" + Tenant + "/" + token_endpoint;
             
             List<KeyValuePair<string, string>> KVPs = new List<KeyValuePair<string, string>>();
             KVPs.Add(new KeyValuePair<string, string>("client_id",ClientId.ToString()));
