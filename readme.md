@@ -68,26 +68,6 @@ else
 }
 ```
 
-## Example: Sharepoint List Manipulation
-```
-//Get the sites that are available
-SharepointSite[] sites = mgh.SearchSharepointSitesAsync("").Result;
-Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(sites)).ToString());
-
-//Get the lists in that site
-SharepointList[] lists = mgh.ListSharepointListsAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842")).Result;
-Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(lists)).ToString());
-
-//Get the content of a list
-SharepointListItem[] items = mgh.GetAllItemsFromSharepointListAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Parse("771b32f1-859c-4570-8bf2-7c86d140dc5c")).Result;
-Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(items)).ToString());
-
-//Creating a new item (record) in a list
-JObject jo = new JObject();
-jo.Add("Title", "Harry the Hippo");
-mgh.CreateItemAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Parse("771b32f1-859c-4570-8bf2-7c86d140dc5c"), jo).Wait();
-```
-
 ## Example: Create Outlook Calendar Event (Appointment)
 The following demonstrates how you can schedule a new event in your user's default outlook calendar. It requires the `Calendars.ReadWrite` scope.
 
@@ -120,4 +100,24 @@ email.ContentType = OutlookEmailMessageContentType.Text;
 Console.Write("Sending email... ");
 await mgh.SendOutlookEmailMessageAsync(email);
 Console.WriteLine("Sent!");
+```
+
+## Example: Sharepoint List Manipulation
+```
+//Get the sites that are available
+SharepointSite[] sites = mgh.SearchSharepointSitesAsync("").Result;
+Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(sites)).ToString());
+
+//Get the lists in that site
+SharepointList[] lists = mgh.ListSharepointListsAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842")).Result;
+Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(lists)).ToString());
+
+//Get the content of a list
+SharepointListItem[] items = mgh.GetAllItemsFromSharepointListAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Parse("771b32f1-859c-4570-8bf2-7c86d140dc5c")).Result;
+Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(items)).ToString());
+
+//Creating a new item (record) in a list
+JObject jo = new JObject();
+jo.Add("Title", "Harry the Hippo");
+mgh.CreateItemAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Parse("771b32f1-859c-4570-8bf2-7c86d140dc5c"), jo).Wait();
 ```
