@@ -89,7 +89,7 @@ mgh.CreateItemAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Par
 ```
 
 ## Example: Create Outlook Calendar Event (Appointment)
-The following demonstrates how you can schedule a new event in your user's default outlook calendar.
+The following demonstrates how you can schedule a new event in your user's default outlook calendar. It requires the `Calendars.ReadWrite` scope.
 
 ```
 //Create Outlook Event
@@ -103,4 +103,21 @@ ev.EndUTC = ev.StartUTC.AddMinutes(15);
 Console.Write("Scheduling... ");
 await mgh.CreateOutlookEventAsync(ev);
 Console.WriteLine("done!");
+```
+
+## Example: Send an Email via Outlook
+The following requires the `Mail.Send` scope.
+
+```
+//Construct email
+OutlookEmailMessage email = new OutlookEmailMessage();
+email.ToRecipients.Add("timhanewich@gmail.com");
+email.Subject = "My favorite songs";
+email.Content = "1. Chris Brown - Yeah 3X\n2. Chris Brown - Forever\n3. Chris Brown - Turn Up the Music";
+email.ContentType = OutlookEmailMessageContentType.Text;
+
+//Send email
+Console.Write("Sending email... ");
+await mgh.SendOutlookEmailMessageAsync(email);
+Console.WriteLine("Sent!");
 ```
