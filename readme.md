@@ -44,6 +44,30 @@ string code = Console.ReadLine();
 mgh.GetAccessTokenAsync(code).Wait();
 ```
 
+## Example: Resuming Access After a Period of Inactivity
+Normally the bearer token you will be given will expire within 60 minutes. This means your access will also stop. However, if the `offline_access` scope was added to the original authorization flow (it is by default in the `MicrosoftGraphHelper` class), you can refresh your token by using the refresh token that was originally provided in the authorization flow. 
+
+For example:
+
+```
+// The token payload was saved to JSON previously. Here, we are retrieving it and adding it back
+MicrosoftGraphTokenPayload tokens = JsonConvert.DeserializeObject<MicrosoftGraphTokenPayload>(System.IO.File.ReadAllText(@"C:\Users\timh\Downloads\tah\TimHanewich.MicrosoftGraphHelper\payload.json"));
+MicrosoftGraphHelper mgh = new MicrosoftGraphHelper();
+mgh.LastReceivedTokenPayload = tokens;
+
+//Refresh if the retrieved token is expired
+if (mgh.AccessTokenHasExpired())
+{
+    Console.Write("Tokens are expired! Refreshing... ");
+    await mgh.RefreshAccessTokenAsync(); 
+    Console.WriteLine("Refreshed!");  
+}
+else
+{
+    Console.WriteLine("Tokens are still active! No need to refresh.");
+}
+```
+
 ## Example: Sharepoint List Manipulation
 ```
 //Get the sites that are available
@@ -62,4 +86,21 @@ Console.WriteLine(JArray.Parse(JsonConvert.SerializeObject(items)).ToString());
 JObject jo = new JObject();
 jo.Add("Title", "Harry the Hippo");
 mgh.CreateItemAsync(Guid.Parse("2e069086-c6f2-4735-a728-eb33b8347842"), Guid.Parse("771b32f1-859c-4570-8bf2-7c86d140dc5c"), jo).Wait();
+```
+
+## Example: Create Outlook Calendar Event (Appointment)
+The following demonstrates how you can schedule a new event in your user's default outlook calendar.
+
+```
+//Create Outlook Event
+OutlookEvent ev = new OutlookEvent();
+ev.Subject = "Let's do something";
+ev.Body = "Go shopping maybe?";
+ev.StartUTC = new DateTime(2025, 03, 02, 12, 0, 0);
+ev.EndUTC = ev.StartUTC.AddMinutes(15);
+
+//Schedule
+Console.Write("Scheduling... ");
+await mgh.CreateOutlookEventAsync(ev);
+Console.WriteLine("done!");
 ```
